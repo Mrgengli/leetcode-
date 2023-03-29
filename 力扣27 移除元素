@@ -33,8 +33,35 @@ public:
 
 给的答案 暴力枚举的方法：
 
-![image](https://github.com/lexsaints/powershell/blob/master/IMG/ps2.png)
+// 时间复杂度：O(n^2)
+// 空间复杂度：O(1)
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int size = nums.size();
+        for (int i = 0; i < size; i++) {
+            if (nums[i] == val) { // 发现需要移除的元素，就将数组集体向前移动一位
+                for (int j = i + 1; j < size; j++) {
+                    nums[j - 1] = nums[j];
+                }
+                i--; // 因为下标i以后的数值都向前移动了一位，所以i也向前移动一位
+                size--; // 此时数组的大小-1
+            }
+        }
+        return size;
 
+    }
+};
+
+
+还有一种方法：双指针法
+双指针法（快慢指针法）： 通过一个快指针和慢指针在一个for循环下完成两个for循环的工作。     ****这是一种非常重要的思想  ！！双指针！！
+
+定义快慢指针
+
+快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
+慢指针：指向更新 新数组下标的位置
+很多同学这道题目做的很懵，就是不理解 快慢指针究竟都是什么含义，所以一定要明确含义，后面的思路就更容易理解了。
 
 
 
