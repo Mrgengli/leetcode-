@@ -31,7 +31,7 @@ public:
 };
 运行之后发现   在以[3,2,2,3],val=3，的时候输出是[3,2],这里的最后一个也是val。导致在交换的时候 ，实质上并没有移除元素。
 
-给的答案 暴力枚举的方法：假如发现是val ，就用后面的值将前面的覆盖掉，将数组后面的部分整体像前面移一个
+给的答案 暴力枚举的方法：假如发现是val ，就用后面的值将前面的覆盖掉，将数组后面的部分整体像前面移一个  运行之后时间复杂度太高了
 
 // 时间复杂度：O(n^2)
 // 空间复杂度：O(1)
@@ -44,7 +44,7 @@ public:
                 for (int j = i + 1; j < size; j++) {
                     nums[j - 1] = nums[j];
                 }
-                i--; // 因为下标i以后的数值都向前移动了一位，所以i也向前移动一位
+                i--; // *********因为下标i以后的数值都向前移动了一位，所以i也向前移动一位*********
                 size--; // 此时数组的大小-1
             }
         }
@@ -54,14 +54,45 @@ public:
 };
 
 
-还有一种方法：双指针法
+第二种方法：双指针法
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int j=nums.size()-1;
+        for(int i=0;i<=j;i++){
+            if(val == nums[i]){
+              nums[i]=nums[j];
+              i--;      //*******这里需要注意要将i--；因为这时候的miuns[i]已经被换了，这个nums[i]也还有可能是val值
+              j--;
+            }
+
+    return j+1;
+    }
+};
+
 双指针法（快慢指针法）： 通过一个快指针和慢指针在一个for循环下完成两个for循环的工作。     ****这是一种非常重要的思想  ！！双指针！！
 
 定义快慢指针
 
 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
 慢指针：指向更新 新数组下标的位置
-很多同学这道题目做的很懵，就是不理解 快慢指针究竟都是什么含义，所以一定要明确含义，后面的思路就更容易理解了。
+
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int slowIndex = 0;
+        for (int fastIndex = 0; fastIndex < nums.size(); fastIndex++) {
+            if (val != nums[fastIndex]) {
+                nums[slowIndex++] = nums[fastIndex];
+            }
+        }
+        return slowIndex;
+    }
+};
+这里其实相当于用了两个指针对应了两个数组，只不过这两个数组存在一片内存地址上，两个指针从同一个方向向前走，遇到不要的值快指针就往前跳过，不复制给慢指针。
+
 
 
 
