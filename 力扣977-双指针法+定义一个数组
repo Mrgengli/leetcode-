@@ -1,0 +1,70 @@
+题目描述：
+给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
+
+示例 1： 输入：nums = [-4,-1,0,3,10] 输出：[0,1,9,16,100] 解释：平方后，数组变为 [16,1,0,9,100]，排序后，数组变为 [0,1,9,16,100]
+
+示例 2： 输入：nums = [-7,-3,2,3,11] 输出：[4,9,9,49,121]
+
+第一种方法：
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+        for (int i = 0; i < A.size(); i++) {
+            A[i] *= A[i];
+        }
+        sort(A.begin(), A.end()); // 快速排序
+        return A;
+    }
+};
+
+这种方法的时间复杂度为O(nlogn)
+
+第二种方法：双指针法
+下面是我自己写的（报错）：但是却显示
+输入：
+               [-4,-1,0,3,10]
+输出：
+               [16,1,0,9,100]
+预期结果：
+               [0,1,9,16,100]
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+       int i=0;
+       int j = nums.size()-1;
+       vector<int> ans;
+       while(j>=i){
+           if(nums[i]*nums[i]<=nums[j]*nums[j]){
+                ans.push_back(nums[i]*nums[i]);    //注意这里不能使用i++，因为有两个i++；会让i自增两次；
+                i++;
+           }
+           else{
+               ans.push_back(nums[j]*nums[j]);
+               j--;
+           } 
+       }
+       return ans; 
+
+    }
+};
+
+给的标准答案是：
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+        int k = A.size() - 1;
+        vector<int> result(A.size(), 0);
+        for (int i = 0, j = A.size() - 1; i <= j;) { // 注意这里要i <= j，因为最后要处理两个元素
+            if (A[i] * A[i] < A[j] * A[j])  {
+                result[k--] = A[j] * A[j];
+                j--;
+            }
+            else {
+                result[k--] = A[i] * A[i];
+                i++;
+            }
+        }
+        return result;
+    }
+};
+然而我感觉这两个答案一样的
